@@ -110,10 +110,10 @@ typedef struct
 	// union dieu khien led: truy cap theo mang hoac tung led rieng biet
 	typedef union
 		{
-			struct 
-			{
-				Led_t LED_1, LED_2, LED_3, LED_4;
-			};
+//			struct 
+//			{
+//				Led_t LED_1, LED_2, LED_3, LED_4;
+//			};
 			Led_t leds[4];
 		} Led_Control_t;
 		
@@ -144,15 +144,21 @@ typedef struct
 		} 
 	}
 	
-void accumulate(void)
+	
+void don(void)
 {
-    Led_t *ptr, *p;
-    for(ptr = Led_Control.leds; ptr <= &Led_Control.leds[3]; ptr++){
-        for(p = Led_Control.leds; p <= ptr; p++){  // Kh?i t?o p t? d?u danh sách LED
-            HAL_GPIO_WritePin(p->GPIOx, p->pin, 0);
-            HAL_Delay(1000);
-        }
-    }
+	for(int i=3;i>=0;i--){
+		for(int k=0;k<=i;k++){
+			Led_t exe = Led_Control.leds[k];
+			HAL_GPIO_WritePin(exe.GPIOx, exe.pin, 0);
+			HAL_Delay(500);
+			HAL_GPIO_WritePin(exe.GPIOx, exe.pin, 1);
+			if(k == i)
+			{
+				HAL_GPIO_WritePin(exe.GPIOx, exe.pin, 0);
+			}
+		}
+	}
 }
 // *************************************************************************
 /* USER CODE END 0 */
@@ -197,7 +203,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		right_left();
+		don();
+		//right_left();
   }
   /* USER CODE END 3 */
 }
